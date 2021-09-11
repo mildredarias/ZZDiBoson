@@ -1,0 +1,386 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<td><img src=\"ATLAS-Logo-Blue-transparent.png\" alt=\"Logo ATLAS\" \"width=500px;\"/></td>\n",
+    "<td><img src=\"root-6.png\" alt=\"Logo Root\"  \"width=500px;\"/></td>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<td><img src=\"ictp_head_logo.png\" alt=\"Logo del ICTP\" \"width=500px;\"/></td>\n",
+    "<td><td><td><td><td><td><td><td><td><td><td><img src=\"ula.png\" alt=\"Logo Ula\"  \"width=100px;\"/></td></td></td></td></td></td></td></td></td></td></td>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "<Center><h1>Computational reproduction, optimisation and discussion of the ATLAS Experiment analysis on the production of ZZ in proton-proton collisions at √s = 13 TeV using Open Data</h1></Center>\n",
+    "\n",
+    "\n",
+    "**Introduction**\n",
+    "We run the ZZDiBoson analysis and create the histograms"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**We need to include some standard C++ and ROOT libraries**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#include <stdio.h>\n",
+    "#include <stdlib.h>\n",
+    "#include <cstdio>\n",
+    "#include <iostream>\n",
+    "#include <time.h> "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 1. ZZDiBoson Analysis code of 13Tev dataset  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Entering the folder containing the analysis code"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "chdir(\"/home/student/ZZDiBoson/\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "/eos/home-t/tester1/SWAN_projects/MILDRED/ZZDiBoson\n"
+     ]
+    }
+   ],
+   "source": [
+    "system(\"pwd\");"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Creat the output folder"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Welcome to ATLAS 13 TeV Open Data C++ framework!!!\n",
+    "\n",
+    "#### Creating all output directories and cleaning created files"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"mkdir -p Output_ZZDiBosonAnalysis\");"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Creating the directory for the Plotting code: Plotting/histograms"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"mkdir -p Plotting/histograms\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"./clean.sh\");"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "List the content of this folder"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "total 310K\n",
+      "-rw-r--r--. 1 tester1 1307  16K Feb  3 03:47 ZZDiBosonAnalysis.h\n",
+      "-rw-r--r--. 1 tester1 1307  13K Feb  3 03:47 ZZDiBosonAnalysis.C\n",
+      "-rw-r--r--. 1 tester1 1307  11K Feb  3 03:47 README.md\n",
+      "-rw-r--r--. 1 tester1 1307 5.0K Feb  3 03:47 ZZDiBosonAnalysisHistograms.h\n",
+      "-rwxr-xr-x. 1 tester1 1307  163 Feb  3 03:47 clean.sh\n",
+      "-rwxr-xr-x. 1 tester1 1307  613 Feb  3 03:47 run.sh\n",
+      "-rwxr-xr-x. 1 tester1 1307 1.7K Feb  3 03:47 welcome.sh\n",
+      "-rw-r--r--. 1 tester1 1307  30K Feb  3 04:07 ATLAS-Logo-Blue-transparent.png\n",
+      "-rw-r--r--. 1 tester1 1307 4.0K Feb  3 04:35 ula.png\n",
+      "-rw-r--r--. 1 tester1 1307  39K Feb  3 04:35 ictp_head_logo.png\n",
+      "-rw-r--r--. 1 tester1 1307 161K Feb  3 04:35 root-6.png\n",
+      "drwxr-xr-x. 2 tester1 1307 4.0K Feb  3 17:12 Output_ZZDiBosonAnalysis\n",
+      "drwxr-xr-x. 2 tester1 1307 4.0K Feb  3 17:12 Plotting\n",
+      "-rw-r--r--. 1 tester1 1307  13K Feb  3 17:16 ATLAS-Open-Data-cpp-13-TeV-framework-ZZDiBosonAnalysis.ipynb\n",
+      "-rw-r--r--. 1 tester1 1307 7.6K Feb  3 17:16 main_ZZDiBosonAnalysis.C\n"
+     ]
+    }
+   ],
+   "source": [
+    "system(\"ls -lhrt\");"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 3. Begin analysis"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Which option should I run? \n",
+    "Options are:\n",
+    "\n",
+    "0 = run all data and MC one after another\n",
+    "\n",
+    "1 = run data only \n",
+    "\n",
+    "2,3 = run MC samples only"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Should I use PROOF? \\(will make things faster\\)\n",
+    "Options are:\n",
+    "\n",
+    "0 = NO\n",
+    "\n",
+    "1 = YES"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now it's time to RUN!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"chmod 755 run.sh\"); //permission"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Which option should I run?\n",
+      "Options are:\n",
+      "0 = run all data and MC one after another\n",
+      "1 = run data only\n",
+      "2,3 = run MC samples only\n",
+      "Should I use PROOF? (will make things faster)\n",
+      "Options are:\n",
+      "0 = NO\n",
+      "1 = YES\n",
+      "starting ROOT\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Info in <TUnixSystem::ACLiC>: creating shared library /eos/home-t/tester1/SWAN_projects/MILDRED/ZZDiBoson/./main_ZZDiBosonAnalysis_C.so\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " +++ Starting PROOF-Lite with 16 workers +++\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Opening connections to workers: OK (16 workers)                 \n",
+      "Setting up worker servers: 14 out of 16 (87 %)\r"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "PROOF set to parallel mode (14 workers)\n",
+      " \n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Info in <TProofLite::SetQueryRunning>: starting query: 1\n",
+      "Info in <TProofQueryResult::SetRunning>: nwrks: 14\n",
+      "Looking up for exact location of files: OK (4 files)                 \n",
+      "Looking up for exact location of files: OK (4 files)                 \n",
+      "Info in <TPacketizer::TPacketizer>: Initial number of workers: 14\n",
+      "Validating files: OK (4 files)                 \n",
+      "[TProof::Progress] Total 832 events\t|>...................| 0.00 %\r"
+     ]
+    }
+   ],
+   "source": [
+    "system(\"./run.sh\");"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 4. Plot the result"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "chdir(\"Plotting\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"./clean.sh\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"pwd\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"chmod 755 plotme.sh\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"./plotme.sh\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"ls -lhrt histograms/\");"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "system(\"date\");\n",
+    "clock_t endTime = clock(); \n",
+    "double time_taken = (double) (endTime-startTime) / CLOCKS_PER_SEC * 1000.0; // in seconds \n",
+    "cout << \"Finished in \" << (int)(time_taken / 60) << \" min \" << (int)time_taken % (int)60 << \" s \" << endl;   "
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "ROOT C++",
+   "language": "c++",
+   "name": "root"
+  },
+  "language_info": {
+   "codemirror_mode": "text/x-c++src",
+   "file_extension": ".C",
+   "mimetype": " text/x-c++src",
+   "name": "c++"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}
